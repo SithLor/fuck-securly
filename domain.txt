@@ -1,0 +1,16 @@
+https://accounts.securly.com
+https://support.securly.com
+https://idp.securly.com
+https://securly.com
+https://tracking.securly.com
+https://platform.securly.com
+https://v1api.securly.com
+https://g.securly.com
+https://www.flex.securly.com
+https://calendar.securly.com
+https://docs.securly.com
+https://sre.securly.com
+https://misc.securly.com
+pass.securly.com
+try.securly.com
+hello.securly.com
