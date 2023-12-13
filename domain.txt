@@ -14,3 +14,8 @@ https://misc.securly.com
 pass.securly.com
 try.securly.com
 hello.securly.com
+
+proxy 
+54.193.199.220
+204.110.220.119
+https://accounts.securly.com/
