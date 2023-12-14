@@ -31,7 +31,27 @@ https://www.securly.com/parents/api/requestLogin.php
 /var/www_shared/library/Securly/SSO.php
 https://prod-web-assets-securly.s3.us-west-1.amazonaws.com/images/Student-Engagement-PV-Hover.png
 https://www.securly.com/parents/api/requestLogin?token=%27d%27&password=%3C?php%20echo%20%22gay%22%20?%3E
+https://www.securly.com/assets/images/Securly_b2b_DNSwhitepaper_0319.pdf
+https://www.securly.com/assets/images/DNSwhitepaper_final.pdf
+https://www.securly.com/assets/images/Securly_Impact-Report_Oct_2018_final.pdf
+https://www.securly.com/site/assets/pdf/smart-dns.pdf
+https://www.securly.com/assets/images/Securly-2019-Impact-Report.pdf
+https://www.securly.com/site/assets/images/Securly_b2b_Understanding-NLP-The-Securly-Way_0620-new.pdf
+https://cbd4ec8203e2218728006de258d93318sync.pacrpc.uswest2.v1api.securly.com/site/assets/pdf/frederick-county-public-schools.pdf
+https://www.securly.com/parents/assets/html/importing.html
+https://org4510.deviceconsole.securly.com/userguide/chrome/SavingaStudentScreen.html
 
+https://org4510.deviceconsole.securly.com/userguide/chrome/ForceinstallextensionthroughGoog.html
+https://org4510.deviceconsole.securly.com/userguide/chrome/Chat.html
+https://org4510.deviceconsole.securly.com/userguide/chrome/LinkingyourGoogleAccounttoDevice.html
+https://org4510.deviceconsole.securly.com/userguide/chrome/ScreenLock.html
+https://org4510.deviceconsole.securly.com/userguide/chrome/BlockLists.html
+https://org4510.deviceconsole.securly.com/userguide/chrome/StartingaClassSession.html
+https://org4510.deviceconsole.securly.com/userguide/chrome/SchedulingClasses.html
+https://www.securly.com/smart.pac?fid=admin@securlyqa1.com
+https://useast-www.securly.com/smart.pac?fid=tfisher@d84.org
+https://useast2-www.securly.com/smart.pac?fid=securly@kansasps.com
+site:"securly.com" intext:php
 https://accounts.prtqa.securly.io
     /securlyplatform.js
 https://flextimemanager.com
@@ -65,7 +85,14 @@ https://accounts.securly.com
     /login/oidc/end_session
     /login/oidc/jwks
 https://support.securly.com
+
+site:securly.com inurl:"php"
+
+
+
 https://securly.com
+    /site/reCaptchaV1.php
+    /app/SSO
     /terms-and-conditions
     /students-privacy
     /website-terms
