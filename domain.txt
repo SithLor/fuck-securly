@@ -15,7 +15,85 @@ pass.securly.com
 try.securly.com
 hello.securly.com
 
-proxy 
+ips
 54.193.199.220
 204.110.220.119
+52.9.92.70:443
+18.213.37.112:443
+
 https://accounts.securly.com/
+http://ec2-52-8-76-27.us-west-1.compute.amazonaws.com/
+https://www.securly.com/var/www_shared/library/Securly/SSO.php
+https://www.securly.com/parents/api/
+library/Securly/SSO.php
+https://www.securly.com/app/error?url=/var/www_shared/library/Securly/SSO.php
+https://www.securly.com/parents/api/requestLogin.php
+/var/www_shared/library/Securly/SSO.php
+https://prod-web-assets-securly.s3.us-west-1.amazonaws.com/images/Student-Engagement-PV-Hover.png
+https://www.securly.com/parents/api/requestLogin?token=%27d%27&password=%3C?php%20echo%20%22gay%22%20?%3E
+
+https://accounts.prtqa.securly.io
+    /securlyplatform.js
+https://flextimemanager.com
+    /login
+https://pass.securly.com
+    /login
+https://observe.securly.com
+https://idp.securly.com
+    /app/errors?reason=1
+    /app/auth
+    /app/auth?type=2
+    /app/auth?type=1
+    /assets/images/ms-logo.png
+    /assets/images/g-logo.png
+    /assets/css/fonts/metropolis/stylesheet.css
+    /assets/css/login.css
+https://portal.rhithm.app
+https://vms.securly.com/
+https://deviceconsole.securly.com
+    /site
+    /classroom
+    /mdm
+https://homesupport.securly.com
+https://blog.securly.com
+https://lounge.securly.com
+
+https://accounts.securly.com
+    /.well-known/openid-configuration
+    /login/oidc/authorize
+    /login/oidc/token
+    /login/oidc/end_session
+    /login/oidc/jwks
+https://support.securly.com
+https://securly.com
+    /terms-and-conditions
+    /students-privacy
+    /website-terms
+    /privacy
+    /about-us
+    /contact-us
+    /partners
+    /careers
+    /trust-and-safety
+    /filter
+    /pass
+    /rhithm
+    /aware
+    /on-call
+    /discern
+    /flex
+    /mdm
+    /reveal
+    /solutions/student-engagement
+    /solutions/student-wellness
+    /solutions/student-safety
+    /aware
+    /parent-login
+    /solutions/student-wellness
+    /solutions/technology
+    /app/login?product=aware
+    site/js/master.js
+    site/js/master.js.map
+    site/js/bootstrap.min.js
+    site/js/jquery.mask.min.js
+    site/js/slick.min.js
