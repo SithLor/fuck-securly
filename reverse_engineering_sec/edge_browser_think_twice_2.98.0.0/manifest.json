@@ -1,0 +1,83 @@
+{
+  "name": "Securly for Edge browser",
+  "short_name": "Securly",
+  "version": "2.98.0.0",
+  "update_url": "https://crextnbeta.securly.com/extensions.xml",
+  "description": "Secure your Edge browser with Securly",
+  "permissions": ["webRequest", "webRequestBlocking", "identity", "*://*/","file://*", "cookies", "tabs", "browsingData", "identity.email", "geolocation", "idle"],
+  "content_scripts": [{
+    "matches": ["*://*.youtube.com/*", "*://youtube.com/*", "*://youtube-nocookie.com/*","*://*.youtube-nocookie.com/*"],
+    "js": ["content.min.js"],
+    "run_at": "document_idle",
+    "all_frames": true
+  },
+  {
+    "matches": ["*://*.google.com/maps/*","*://google.com/maps/*"],
+    "js": ["content2.min.js"],
+    "run_at": "document_idle",
+    "all_frames": true
+  },
+  {
+    "matches": [
+      "*://bing.com/search*",
+      "*://www.bing.com/search*",
+      "*://search.yahoo.com/search*",
+      "*://www.search.yahoo.com/search*",
+      "*://youtube.com/*",
+      "*://www.youtube.com/*",
+      "*://google.com/search*",
+      "*://www.google.com/search*",
+      "*://google.co.uk/search*",
+      "*://www.google.co.uk/search*",
+      "*://google.ie/search*",
+      "*://www.google.ie/search*",
+      "*://google.ca/search*",
+      "*://www.google.ca/search*",
+      "*://google.com.au/search*",
+      "*://www.google.com.au/search*",
+      "*://google.co.in/search*",
+      "*://www.google.co.in/search*"
+    ],
+    "js": ["content3.min.js"],
+    "run_at": "document_idle",
+    "all_frames": true
+  },
+  {
+    "matches": ["<all_urls>"],
+    "js": ["content4.min.js"],
+    "run_at": "document_idle",
+    "all_frames": false
+  },
+  {
+    "matches": ["*://meet.google.com/*"],
+    "js": ["content6.min.js"],
+    "run_at": "document_idle",
+    "all_frames": true
+  },
+  {	
+    "matches": ["<all_urls>"],	
+    "js": ["content5.min.js"],	
+    "run_at": "document_idle",	
+    "all_frames": true	
+  }
+  ],
+  "background": {
+    "scripts": ["conf.js", "securly.min.js"],
+    "persistent": true
+  },
+  "oauth2": {
+    "client_id": "979354546084.apps.googleusercontent.com",
+    "scopes": [
+      "email"
+    ]
+  },
+  "web_accessible_resources": [
+    "fonts/*",
+    "*.svg"
+  ],
+  "icons": { "16": "icon16.png",
+             "48": "icon48.png",
+            "128": "icon128.png" },
+
+  "manifest_version": 2
+}

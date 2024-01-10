@@ -1,0 +1,58 @@
+https://extensions.securly.com/extensions.xml
+<gupdate xmlns="http://www.google.com/update2/response" protocol="2.0">
+<script>window._wordtune_extension_installed = true;</script>
+<app appid="nldffgleokocdcddeocjmdgneoinbhfb">
+<updatecheck codebase="https://extensions.securly.com/crextn_client_think_twice_2.98.0.0.crx" version="2.98.0.0"/>
+</app>
+<app appid="hgpppmjalkmcmloikkbmonbpdakcklfp">
+<updatecheck codebase="https://extensions.securly.com/chrome_browser_think_twice_2.98.0.0.crx" version="2.98.0.0"/>
+</app>
+<app appid="bjnmaaglmedeickpbmlhmjkndenggend">
+<updatecheck codebase="https://extensions.securly.com/edge_browser_think_twice_2.98.0.0.crx" version="2.98.0.0"/>
+</app>
+<app appid="khfcjmoagjdbcchabenkohfbllefkbei">
+<updatecheck codebase="https://extensions.securly.com/crextn_client_MV3_2.98.0.0.crx" version="2.98.0.0"/>
+</app>
+<app appid="lcgajdcbmhepemmlpemkkpgagieehmjp">
+<updatecheck codebase="https://extensions.securly.com/chrome_browser_production_2.98.56.crx" version="2.98.56"/>
+</app>
+<app appid="joflmkccibkooplaeoinecjbmdebglab">
+<updatecheck codebase="https://extensions.securly.com/crextn_client_production_2.98.55.0.crx" version="2.98.55.0"/>
+</app>
+<app appid="hgmfginomehjpgpacpjnjaijecknnaog">
+<updatecheck codebase="https://extensions.securly.com/crextn_client_beta_2.98.50.0.crx" version="2.98.50.0"/>
+</app>
+<app appid="ehpfmanenigliflmbaiihbppncilhaha">
+<updatecheck codebase="https://extensions.securly.com/chrome_browser_beta_2.98.50.0.crx" version="2.98.50.0"/>
+</app>
+<app appid="adncfiefnfjddkdlfcckejoefaoehcdf">
+<updatecheck codebase="https://extensions.securly.com/edge_browser_beta_2.98.56.0.crx" version="2.98.56.0"/>
+</app>
+<app appid="knneimmpeamikmjijmnhjmmobddleohj">
+<updatecheck codebase="https://extensions.securly.com/crextn_client_FILTER-3880_beta_2.98.61.0.crx" version="2.98.61.0"/>
+</app>
+<app appid="cppgiodhimhhljofjomebpcgliegpddd">
+<updatecheck codebase="https://extensions.securly.com/edge_browser_FILTER-3880_beta_2.98.61.0.crx" version="2.98.61.0"/>
+</app>
+<app appid="pmjdkmdfhcbecicgaenammmpamphljpe">
+<updatecheck codebase="https://extensions.securly.com/chrome_browser_windows_FILTER-3880_beta_2.98.61.0.crx" version="2.98.61.0"/>
+</app>
+</gupdate>"
+
+
+
+https://crextnbeta.securly.com/extensions.xml
+<gupdate xmlns="http://www.google.com/update2/response" protocol="2.0">
+<app appid="nldffgleokocdcddeocjmdgneoinbhfb">
+<updatecheck codebase="https://crextnbeta.securly.com/crextn_client_think_twice_2.98.0.0.crx" version="2.98.0.0"/>
+</app>
+<app appid="hgpppmjalkmcmloikkbmonbpdakcklfp">
+<updatecheck codebase="https://crextnbeta.securly.com/chrome_browser_think_twice_2.98.0.0.crx" version="2.98.0.0"/>
+</app>
+<app appid="bjnmaaglmedeickpbmlhmjkndenggend">
+<updatecheck codebase="https://crextnbeta.securly.com/edge_browser_think_twice_2.98.0.0.crx" version="2.98.0.0"/>
+</app>
+<app appid="khfcjmoagjdbcchabenkohfbllefkbei">
+<updatecheck codebase="https://crextnbeta.securly.com/crextn_client_MV3_2.98.0.0.crx" version="2.98.0.0"/>
+</app>
+</gupdate>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Blocked Page
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+      .blocked-page a:focus, .blocked-page button:focus, .blocked-page textarea:focus {
+        outline: 2px solid #0073E6;
+        outline-offset: -2px;
+      }
+      body:not(.user-is-tabbing) a:focus, body:not(.user-is-tabbing) button:focus, body:not(.user-is-tabbing) textarea:focus {
+        outline: none!important;
+      }
+      .newGrid_container {
+        margin: 0 7.7777777778%;
+        max-width: 1440px;
+      }
+      .newGrid_container:after {
+        clear: both;
+        contain: "";
+        display: table;
+      }
+      @media screen and (min-width: 1664px) {
+        .newGrid_container {
+          width: 1440px;
+          margin: 0 auto;
+        }
+      }
+      @media screen and (max-width: 768px) and (min-width: 321px) {
+        .newGrid_container {
+          margin: 0 40px;
+        }
+      }
+      @media screen and (max-width: 320px) {
+        .newGrid_container {
+          margin: 0 24px;
+        }
+      }
+      html {
+        font-family: sans-serif;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+      }
+      section {
+        display: block;
+      }
+      a {
+        background: 0 0;
+      }
+      a:active, a:hover {
+        outline: 0;
+      }
+      h1 {
+        font-size: 2em;
+        margin: .67em 0;
+      }
+      img {
+        border: 0;
+      }
+      button, textarea {
+        color: inherit;
+        font: inherit;
+        margin: 0;
+      }
+      button {
+        overflow: visible;
+      }
+      button {
+        text-transform: none;
+      }
+      button {
+        -webkit-appearance: button;
+        cursor: pointer;
+      }
+      textarea {
+        overflow: auto;
+      }
+      @media print {
+        * {
+          text-shadow: none!important;
+          color: #000!important;
+          background: transparent!important;
+          box-shadow: none!important;
+        }
+        a, a:visited {
+          text-decoration: underline;
+        }
+        a[href]:after {
+          content: " (" attr(href) ")";
+        }
+        a[href^="javascript:"]:after, a[href^="#"]:after {
+          content: "";
+        }
+        img {
+          page-break-inside: avoid;
+        }
+        img {
+          max-width: 100%!important;
+        }
+        p, h2 {
+          orphans: 3;
+          widows: 3;
+        }
+        h2 {
+          page-break-after: avoid;
+        }
+      }
+      * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      :before, :after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      html {
+        font-size: 62.5%;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      }
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.428571429;
+        color: #333;
+        background-color: #fff;
+      }
+      button, textarea {
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+      }
+      a {
+        color: #428bca;
+        text-decoration: none;
+      }
+      a:hover, a:focus {
+        color: #2a6496;
+        text-decoration: underline;
+      }
+      a:focus {
+        outline: thin dotted;
+        outline: 5px auto -webkit-focus-ring-color;
+        outline-offset: -2px;
+      }
+      img {
+        vertical-align: middle;
+      }
+      h1, h2, h4 {
+        font-family: inherit;
+        font-weight: 500;
+        line-height: 1.1;
+        color: inherit;
+      }
+      h1, h2 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+      h4 {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      h1 {
+        font-size: 36px;
+      }
+      h2 {
+        font-size: 30px;
+      }
+      h4 {
+        font-size: 18px;
+      }
+      p {
+        margin: 0 0 10px;
+      }
+      .text-left {
+        text-align: left;
+      }
+      .text-center {
+        text-align: center;
+      }
+      ul {
+        margin-top: 0;
+        margin-bottom: 10px;
+      }
+      .row {
+        margin-left: -15px;
+        margin-right: -15px;
+      }
+      .col-md-5, .col-md-7 {
+        position: relative;
+        min-height: 1px;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+      @media (min-width: 992px) {
+        .col-md-5, .col-md-7 {
+          float: left;
+        }
+        .col-md-7 {
+          width: 58.333333333333336%;
+        }
+        .col-md-5 {
+          width: 41.66666666666667%;
+        }
+      }
+      label {
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: 700;
+      }
+      .btn {
+        display: inline-block;
+        margin-bottom: 0;
+        font-weight: 400;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.428571429;
+        border-radius: 4px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+      }
+      .btn:focus {
+        outline: thin dotted;
+        outline: 5px auto -webkit-focus-ring-color;
+        outline-offset: -2px;
+      }
+      .btn:hover, .btn:focus {
+        color: #333;
+        text-decoration: none;
+      }
+      .btn:active {
+        outline: 0;
+        background-image: none;
+        -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+        box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+      }
+      .dropdown {
+        position: relative;
+      }
+      .dropdown-toggle:focus {
+        outline: 0;
+      }
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        float: left;
+        min-width: 160px;
+        padding: 5px 0;
+        margin: 2px 0 0;
+        list-style: none;
+        font-size: 14px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0, 0, 0, .15);
+        border-radius: 4px;
+        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+        background-clip: padding-box;
+      }
+      .dropdown-menu>li>a {
+        display: block;
+        padding: 3px 20px;
+        clear: both;
+        font-weight: 400;
+        line-height: 1.428571429;
+        color: #333;
+        white-space: nowrap;
+      }
+      .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
+        text-decoration: none;
+        color: #262626;
+        background-color: none;
+      }
+      .clearfix:before, .clearfix:after, .row:before, .row:after {
+        content: " ";
+        display: table;
+      }
+      .clearfix:after, .row:after {
+        clear: both;
+      }
+      [class*=" ss-"]:before {
+        font-family: "SSGizmo";
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: none;
+        text-rendering: optimizeLegibility;
+        white-space: nowrap;
+        -webkit-font-feature-settings: "liga";
+        -moz-font-feature-settings: "liga=1";
+        -moz-font-feature-settings: "liga";
+        -ms-font-feature-settings: "liga" 1;
+        -o-font-feature-settings: "liga";
+        font-feature-settings: "liga";
+        -webkit-font-smoothing: antialiased;
+      }
+      .ss-navigatedown:before {
+        content: '';
+      }
+      body {
+        overflow-x: hidden;
+      }
+      .row {
+        margin-right: 0;
+        margin-left: 0;
+      }
+      textArea {
+        display: block;
+        background-color: #fff;
+        box-shadow: none;
+        border: 0;
+        border-bottom: 1px solid #d2e4f7;
+        -webkit-box-shadow: none;
+        width: 100%;
+        height: 24px;
+        border-radius: 2px;
+        padding: 10px 2px;
+        margin-bottom: 20px;
+        font: 400 1.6rem/1.5 'MetropolisRegular' , sans-serif;
+        color: #171b1f;
+        letter-spacing: normal;
+      }
+      textArea::placeholder {
+        color: #b2bdbf;
+      }
+      .permission-form .question-set {
+        background: url(navigatedown.png) no-repeat 98% #fff;
+        -webkit-appearance: none;
+        padding-right: 20px;
+      }
+      .permission-form .question-set:invalid {
+        color: #b2bdbf;
+      }
+      .ask-permission {
+        display: block;
+        font-size: 16px;
+        position: relative;
+        padding: 0;
+        text-decoration: none;
+      }
+      body {
+        visibility: visible;
+        background: #f7fafc;
+        position: relative;
+        font-size: 1.6rem;
+        color: #555;
+        overflow-x: hidden;
+        text-underline-offset: 3px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-family: "MetropolisRegular", sans-serif;
+      }
+      ::selection {
+        background-color: highlight;
+        color: highlighttext;
+      }
+      .mt-0 {
+        margin-top: 0;
+      }
+      .shadow-container {
+        word-break: break-word;
+        padding: 20px 20px 94px;
+        border-radius: 8px;
+        box-shadow: 0 2px 2px 0 rgba(157, 171, 186, .05), 0 4px 4px 0 rgba(190, 203, 218, .05), 0 8px 8px 0 rgba(157, 171, 186, .05), 0 16px 16px 0 rgba(157, 171, 186, .05), 0 32px 32px 0 rgba(157, 171, 186, .05);
+        background-color: #fff;
+        min-height: 80%;
+      }
+      .shadow-container .heading {
+        padding-top: 8px;
+        margin-top: 8px;
+      }
+      .btn {
+        display: inline-block;
+        margin: 10px 0;
+        font: 400 1.6rem/20px 'MetropolisSemiBold', sans-serif;
+        cursor: pointer;
+        min-width: 136px;
+        height: 44px;
+        border-radius: 22px;
+        text-decoration: none;
+      }
+      .pr-4 {
+        padding-right: 16px;
+      }
+      .btn.primary {
+        background-color: #0073e6;
+        color: #fff;
+      }
+      .btn.primary:focus, .btn.primary:hover {
+        background-color: #0060BF;
+      }
+      .btn.primary:active {
+        background-color: #004D99;
+        border: 2px solid #004D99;
+      }
+      .btn.primary:disabled {
+        background-color: #bfdfff;
+        color: #63717e;
+        border: 2px solid #bfdfff;
+      }
+      .padding-wrapper {
+        padding: 54px 0;
+      }
+      h1 {
+        font-size: 3.2rem;
+        line-height: 1.5;
+        font-family: 'MetropolisSemiBold', sans-serif;
+        color: #171b1f;
+      }
+      h2 {
+        font: 400 1.8rem/1.78 'MetropolisRegular', sans-serif;
+        color: #3d4852;
+        margin-top: 6px;
+      }
+      .schlblockMessage {
+        padding-top: 14px;
+        padding-bottom: 64px;
+        font: 400 1.8rem/1.78 'MetropolisRegular', sans-serif;
+        color: #3d4852;
+      }
+      a:not([href]):not([tabindex]) {
+        color: #0073E6;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .blocked-page a[href]:not([type="button"]), .blocked-page a[href]:hover:not([type="button"]), .blocked-page a[href]:focus:not([type="button"]), .blocked-page a[href]:active:not([type="button"]) {
+        text-decoration: underline;
+        color: #0073e6;
+      }
+      .smallBody {
+        margin: 0 0 4px;
+        font: 400 1.4rem/1.5 'MetropolisRegular' , sans-serif;
+        line-height: 1.43;
+        color: #171b1f;
+      }
+      .regularBody {
+        font: 400 1.6rem/1.5 'MetropolisRegular' , sans-serif;
+        color: #637484;
+        margin-top: 6px;
+      }
+      .submit-btn {
+        font-weight: 500;
+        margin-top: 34px;
+      }
+      .rhs-container {
+        display: flex;
+        flex-direction: column;
+        -ms-flex-direction: column;
+      }
+      .details-heading {
+        color: #171b1f;
+        margin-bottom: 8px;
+        font: 400 1.8rem/1.78 'MetropolisMedium', sans-serif;
+      }
+      .blocked-page .ask-permission {
+        text-decoration: none;
+        padding-bottom: 16px;
+      }
+      #show-more {
+        font-family: 'MetropolisMedium', sans-serif;
+        cursor: pointer;
+      }
+      .block-details {
+        order: 1;
+      }
+      #aria-kb-link {
+        order: 2;
+      }
+      #show-less {
+        order: 3;
+        padding-bottom: 14px;
+        font-family: 'MetropolisRegular', sans-serif;
+        cursor: pointer;
+      }
+      .cta-section {
+        order: 4;
+        padding-top: 34px;
+      }
+      .more-details {
+        display: none;
+        position: relative;
+      }
+      .details:first-child {
+        padding-top: 32px;
+      }
+      .details {
+        font-size: 1.6rem;
+        display: none;
+        color: #637484;
+        line-height: 1.75;
+        font-family: 'MetropolisRegular', sans-serif;
+      }
+      .details span:nth-child(2) {
+        font-family: 'MetropolisMedium', sans-serif;
+      }
+      .lhs-img-container {
+        margin: 0 auto;
+        max-width: 512px;
+      }
+      .lhs-img-container img {
+        max-width: 100%;
+      }
+      .permission-form {
+        width: 90%;
+        max-width: 400px;
+      }
+      .permission-form textArea {
+        height: 75px;
+        max-height: 200px;
+        font-size: 1.4rem;
+        font-family: 'MetropolisRegular', sans-serif;
+        margin-top: 8px;
+        padding: 4px 8px;
+        border: 1px solid #9DB7D1;
+      }
+      .ask-permission .navigation-button {
+        vertical-align: middle;
+        font-size: 1.4rem;
+        color: #0073E6;
+      }
+      .ask-permission button {
+        color: #0073E6;
+        background: none;
+        border: 0;
+        padding: 4px 0 0;
+        font: 400 1.6rem/20px 'MetropolisMedium', sans-serif;
+      }
+      .emailstatus-container {
+        display: flex;
+        align-items: center;
+        padding: 20px 0 24px;
+      }
+      .m-0 {
+        margin: 0;
+      }
+      .medium {
+        font-family: 'MetropolisMedium', sans-serif;
+      }
+      @media screen and (max-width: 767px) {
+        .rhs-container {
+          padding: 32px 24px 0;
+        }
+        .lhs-img-container {
+          max-width: 360px;
+        }
+        .schlblockMessage {
+          padding-bottom: 24px;
+        }
+        .shadow-container {
+          margin: 0;
+        }
+        .padding-wrapper {
+          padding: 0;
+        }
+        .permission-form {
+          max-width: 100%;
+          width: 100%;
+        }
+      }
+      .btn-dropdown {
+        text-align: left;
+        color: #3D4852;
+        border-radius: 4px;
+        font: 400 1.6rem/1.3 'MetropolisRegular' , sans-serif;
+        margin: 0;
+        width: 100%;
+        background-color: #fff;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        border-bottom: 1px solid #D2E4F7;
+        -webkit-outline: none;
+        padding: 4px 0px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      .btn-dropdown:focus {
+        color: #3D4852;
+        outline: none;
+        box-shadow: none;
+      }
+      .btn-dropdown:hover {
+        color: #3D4852;
+      }
+      .dropdown-menu {
+        width: 100%;
+        padding: 0;
+        z-index: 40;
+        border-radius: 4px;
+        box-shadow: 0 15px 18px 0 rgba(10, 31, 68, 0.12), 0 0 1px 0 rgba(10, 31, 68, 0.1);
+      }
+      .dropdown-menu li:hover, .dropdown-menu li:focus {
+        text-decoration: none;
+        background-color: #F2F9FF;
+      }
+      .dropdown-menu li {
+        font: 400 1.4rem/1.5 'MetropolisRegular' , sans-serif;
+        text-align: left;
+        padding: 15px 16px 0px 16px;
+        cursor: pointer;
+      }
+      .dropdown-menu li a {
+        color: #637484!important;
+        text-decoration: none!important;
+        border-bottom: 1px solid #D2E4F7;
+        padding-bottom: 9px;
+        position: relative;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-transform: capitalize;
+      }
+      .dropdown-menu li:last-child a {
+        border-bottom: none;
+      }
+      @font-face {
+        font-family: "SSGizmo";
+        src: url('fonts/ss-gizmo.eot');
+        src: url('fonts/ss-gizmo.eot?#iefix') format('embedded-opentype'), url('fonts/ss-gizmo.woff') format('woff'), url('=fonts/ss-gizmo.ttf')  format('truetype'), url('fonts/ss-gizmo.svg#SSGizmo') format('svg');
+        font-weight: normal;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'MetropolisRegular';
+        src: url('fonts/MetropolisRegular.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'MetropolisSemiBold';
+        src: url('fonts/MetropolisSemiBold.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'MetropolisMedium';
+        src: url('fonts/MetropolisMedium.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+      }
+    </style>
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="favicon-180x180.png" sizes="180x180" />
+    <link rel="icon" href="favicon-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="favicon-16x16.png" sizes="16x16" type="image/png" />
+    <link rel="icon" href="favicon-16x16.ico" />
+    <script type="text/javascript" src="jquery-3.6.0.js"></script>
+  </head>
+  <body>
+    <!--BEGIN BLOCKED TEMPLATE-->
+    <div class="blocked-page businessbg">
+    <!-- ==========================================================================
+    Blocked kids full page - html starts
+    ========================================================================== -->
+      <div class="padding-wrapper">
+        <div class="newGrid_container shadow-container">
+          <div class="row">
+            <h1 class="text-center heading">Looks like this page isn't allowed
+            </h1>
+            <div class="schlblockMessage mt-0 text-center">This page has been blocked.
+            </div>                        
+          </div>
+          <div class="row">
+            <div class="col-md-7 text-center">
+              <div class="lhs-img-container ">
+                <img src="blocking-animation.gif" alt=""/>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <section class="rhs-container">
+                <div id="blockDetails" class="block-details">
+                  <h2 class="details-heading">Blocking details</h2>
+                  <div class="regularBody">
+                    <span>URL: </span>
+                    <span class="medium" id="site"></span>
+                  </div>
+                  <div class="regularBody">
+                    <span>Reason: </span>
+                    <span class="medium" id="reason"></span>
+                  </div>
+                  <a role="button" id="show-more" class="regularBody medium" style="display: inline-block;">Show more</a>
+                  <div class="more-details">
+                    <div class="details">
+                      <span>Category: </span>
+                      <span id="category">
+                      </span>
+                    </div>
+                    <div class="details">
+                      <span>User email: </span>
+                      <span id="useremail"></span>
+                    </div>
+                    <div class="details" style="padding-bottom: 24px;">
+                      <span>Policy: </span>
+                      <span>Global</span>
+                    </div>
+                    <div class="details">
+                      <span>Date and time: </span>
+                      <span id="dateTime"></span>
+                    </div>
+                    <div class="details">
+                      <span>Filtering methods: </span>
+                      <span>Chrome Extension</span>
+                    </div>
+                  </div>
+                  <div class="clearfix">
+                  </div>
+                </div>
+                <!-- SHOW LESS link placed outside blockDetails div for accessibility re-ordering -->
+                <a role="button" id="show-less" aria-hidden="true" tabindex="-1" style="display:none;" class="regularBody medium">Show less</a>
+                <!-- ==========================================================================
+                Blocked Kids - Right Side ends
+                ========================================================================== -->
+                <div id="aria-kb-link" class="details" aria-label="Refer to KB article for explanation of blocking details">
+                  <span>Refer to 
+                    <a target="_blank" aria-label="KB article explaining blocking details" href="https://support.securly.com/hc/en-us/articles/214616977-How-do-I-find-out-why-a-particular-site-was-blocked-">KB article</a> for explanation of blocking details
+                    <span>
+                      </div>
+                    </section>
+                </div>
+                </div> 
+              <!-- end row -->
+            </div> 
+            <!-- end newGridcontainer -->
+          </div> 
+          <!-- end padding wrapping -->
+        </div>
+      </div>
+      <script type="text/javascript" src="blocked.js">
+      </script>
+      </body>
+    </html>
+  <!--END BLOCKED TEMPLATE-->
