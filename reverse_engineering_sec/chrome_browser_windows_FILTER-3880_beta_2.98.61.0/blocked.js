@@ -12,10 +12,20 @@ function setInfo() {
 }
 
 const escapeHTML = (str) => {
+    // Create a new <p> element
     const p = document.createElement("p");
-    p.appendChild(document.createTextNode(str));
+
+    // Create a new text node with the input string
+    // This ensures that any HTML special characters in the string are not interpreted as HTML
+    const textNode = document.createTextNode(str);
+
+    // Append the text node to the <p> element
+    p.appendChild(textNode);
+
+    // Return the HTML content of the <p> element
+    // This will be the input string, but any HTML special characters will have been converted to their corresponding HTML entities
     return p.innerHTML;
-  }
+}
 
  document.addEventListener("DOMContentLoaded", function(event) {
       setInfo();

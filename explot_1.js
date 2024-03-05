@@ -13,6 +13,9 @@ const e = fetch("https://securly.com/parents/api/requestLogin", {
     headers: {
         "Content-Type": "application/json"
     }
-}).then((res) => {
+}).then(async (res) => {
     console.log(res);
+    // Unpack the body stream
+    await return res.json();
+
 });

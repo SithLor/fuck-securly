@@ -4,6 +4,7 @@ function setInfo() {
     var category =  new URLSearchParams(window.location.search).get("category");
     var categoryElem = document.getElementById("category");
     var siteElem = document.getElementById("site");
+    
     categoryElem.innerHTML = escapeHTML(atob(category));
     siteElem.innerHTML = escapeHTML(atob(site));
     } catch(err) {
