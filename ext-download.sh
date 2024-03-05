@@ -22,7 +22,7 @@ wget https://extensions.securly.com/edge_browser_beta_2.98.56.0.crx
 wget https://extensions.securly.com/crextn_client_FILTER-3880_beta_2.98.61.0.crx
 wget https://extensions.securly.com/edge_browser_FILTER-3880_beta_2.98.61.0.crx
 wget https://extensions.securly.com/chrome_browser_windows_FILTER-3880_beta_2.98.61.0.crx
-
+wget https://extensions.securly.com/crextn_client_QA.crx
 # Unzip the downloaded files
 unzip crextn_client_think_twice_2.98.0.0.crx -d crextn_client_think_twice_2.98.0.0
 unzip chrome_browser_think_twice_2.98.0.0.crx -d chrome_browser_think_twice_2.98.0.0
@@ -36,3 +36,4 @@ unzip edge_browser_beta_2.98.56.0.crx -d edge_browser_beta_2.98.56.0
 unzip crextn_client_FILTER-3880_beta_2.98.61.0.crx -d crextn_client_FILTER-3880_beta_2.98.61.0
 unzip edge_browser_FILTER-3880_beta_2.98.61.0.crx -d edge_browser_FILTER-3880_beta_2.98.61.0
 unzip chrome_browser_windows_FILTER-3880_beta_2.98.61.0.crx -d chrome_browser_windows_FILTER-3880_beta_2.98.61.0
+unzip crextn_client_QA.crx -d crextn_client_QA
