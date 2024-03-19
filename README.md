@@ -1,6 +1,6 @@
 # fuck-securly
 https://github.com/jivoi/awesome-osint
-
+https://sheeptester.github.io/longer-tweets/securly-bypass/
 https://www.typescriptlang.org/
 https://swc.rs/playground
 

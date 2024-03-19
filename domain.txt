@@ -14,7 +14,9 @@ https://misc.securly.com
 pass.securly.com
 try.securly.com
 hello.securly.com
-
+https://www.securly.com/site/assets/pdf/dns-deployment-best-practices-guide.pdf
+https://6b42a06eb8958cc9afa8345a90070862sync.pacrpc.uswest2.v1api.securly.com/site/assets/product-briefs/discern.pdf
+https://www.securly.com/site/assets/pdf/windows-best-practices-guide.pdf
 ips
 54.193.199.220
 204.110.220.119
