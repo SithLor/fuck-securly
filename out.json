@@ -1,0 +1,56 @@
+Response: {
+  [Symbol(realm)]: null,
+  [Symbol(state)]: {
+    aborted: false,
+    rangeRequested: false,
+    timingAllowPassed: true,
+    requestIncludesCredentials: false,
+    type: 'default',
+    status: 400,
+    timingInfo: {
+      startTime: 44.73974,
+      redirectStartTime: 44.73974,
+      redirectEndTime: 235.029893,
+      postRedirectStartTime: 235.029893,
+      finalServiceWorkerStartTime: 0,
+      finalNetworkResponseStartTime: 0,
+      finalNetworkRequestStartTime: 0,
+      endTime: 0,
+      encodedBodySize: 145,
+      decodedBodySize: 0,
+      finalConnectionTimingInfo: null
+    },
+    cacheState: '',
+    statusText: 'Unknown Error',
+    headersList: HeadersList {
+      cookies: [Array],
+      [Symbol(headers map)]: [Map],
+      [Symbol(headers map sorted)]: null
+    },
+    urlList: [ URL {}, URL {} ],
+    body: { stream: undefined }
+  },
+  [Symbol(headers)]: HeadersList {
+    cookies: [
+      'AWSALB=xahkC1X4LnWclzdL2GoS7gqWapVoskkkQjCOc/4sfJ4D10avdcpKJ76dhHVESkh0l+sGO3rUJBEiB1jKlr3gX9kCt6NaI/MycMiPttLuL1dFITbjjLBoR8U7MZIq; Expires=Tue, 26 Mar 2024 17:54:10 GMT; Path=/',
+      'AWSALBCORS=xahkC1X4LnWclzdL2GoS7gqWapVoskkkQjCOc/4sfJ4D10avdcpKJ76dhHVESkh0l+sGO3rUJBEiB1jKlr3gX9kCt6NaI/MycMiPttLuL1dFITbjjLBoR8U7MZIq; Expires=Tue, 26 Mar 2024 17:54:10 GMT; Path=/; SameSite=None; Secure'
+    ],
+    [Symbol(headers map)]: Map(14) {
+      'date' => [Object],
+      'content-type' => [Object],
+      'content-length' => [Object],
+      'connection' => [Object],
+      'set-cookie' => [Object],
+      'server' => [Object],
+      'content-location' => [Object],
+      'vary' => [Object],
+      'tcn' => [Object],
+      'x-powered-by' => [Object],
+      'access-control-allow-origin' => [Object],
+      'cache-control' => [Object],
+      'x-frame-options' => [Object],
+      'content-security-policy' => [Object]
+    },
+    [Symbol(headers map sorted)]: null
+  }
+}
