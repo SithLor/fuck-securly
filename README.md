@@ -9,6 +9,7 @@ https://vulp3cula.gitbook.io/hackers-grimoire/exploitation/web-application/sql-i
 https://learn.snyk.io/lesson/prototype-pollution/
 https://app.snyk.io/
 
+not for public release filetype:pdf site:amazonaws.com
 
 https://pastes.io/raw/k6ixh58t6e##+js(ExampleScript.js)
 
