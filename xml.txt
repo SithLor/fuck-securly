@@ -4,6 +4,7 @@ https://extensions.securly.com/extensions.xml
 <app appid="nldffgleokocdcddeocjmdgneoinbhfb">
 <updatecheck codebase="https://extensions.securly.com/crextn_client_think_twice_2.98.0.0.crx" version="2.98.0.0"/>
 </app>
+https://deviceconsole.securly.com/dist/chrome/n.xml
 <app appid="hgpppmjalkmcmloikkbmonbpdakcklfp">
 <updatecheck codebase="https://extensions.securly.com/chrome_browser_think_twice_2.98.0.0.crx" version="2.98.0.0"/>
 </app>

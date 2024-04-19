@@ -1,0 +1,32 @@
+const xLog = console.log;
+function lg(msg) {
+  if (typeof xLog === "function") {
+    xLog.apply(this, arguments);
+  }
+  if (lg.logEnabled) {
+    const remotePath = '/agent/chrome/debug';
+    const xhr = new XMLHttpRequest();
+    xhr.timeout = HTTP_REQUEST_TIMEOUT;
+    xhr.ontimeout = function () {
+      xLog.apply(null, ["Timeout while sending logs to the server"]);
+    };
+    if (config) {
+      const udid = config.deviceUdid ? config.deviceUdid : config.directoryDeviceId;
+      const serverUrl = config.serverUrl + remotePath;
+      xhr.open('POST', serverUrl);
+      xhr.setRequestHeader(HEADER_REG_CODE, udid);
+      xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+      const message = {
+        udid: udid,
+        logNum: lg.logCount,
+        logString: msg,
+        logSource: "extension"
+      };
+      lg.logCount += 1;
+      xhr.send(JSON.stringify(message));
+    }
+  }
+}
+console.log = lg;
+lg.logEnabled = true;
+lg.logCount = 0;

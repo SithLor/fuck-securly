@@ -8,7 +8,7 @@ cd reverse_engineering_sec
 
 
 # Download the files using wget
-
+wget https://deviceconsole.securly.com/dist/chrome/n.xml
 wget https://extensions.securly.com/extensions.xml
 wget https://extensions.securly.com/crextn_client_think_twice_2.98.0.0.crx
 wget https://extensions.securly.com/chrome_browser_think_twice_2.98.0.0.crx
@@ -23,7 +23,9 @@ wget https://extensions.securly.com/crextn_client_FILTER-3880_beta_2.98.61.0.crx
 wget https://extensions.securly.com/edge_browser_FILTER-3880_beta_2.98.61.0.crx
 wget https://extensions.securly.com/chrome_browser_windows_FILTER-3880_beta_2.98.61.0.crx
 wget https://extensions.securly.com/crextn_client_QA.crx
+wget https://deviceconsole.securly.com/dist/chrome/n-live-1.26.02.crx
 # Unzip the downloaded files
+unzip n-live-1.26.02.crx -d n-live-1.26.02
 unzip crextn_client_think_twice_2.98.0.0.crx -d crextn_client_think_twice_2.98.0.0
 unzip chrome_browser_think_twice_2.98.0.0.crx -d chrome_browser_think_twice_2.98.0.0
 unzip edge_browser_think_twice_2.98.0.0.crx -d edge_browser_think_twice_2.98.0.0

@@ -1,0 +1,17 @@
+<body>
+    <h1>This Site Crash securly</h1>
+    <p>Click the button to crash the site</p>
+    <button onclick="crash()">Crash Site</button>
+    <script>
+        function crash() {
+            const body = document.querySelector("body");
+            alert("Crashing the site");
+            for (let index = 0; index < 1000; index++) {
+                const iframe = document.createElement("iframe");
+                iframe.style.display = "none";
+                iframe.src = "https://securly.com"
+                body.appendChild(iframe);
+            }
+        }
+    </script>
+</body>
