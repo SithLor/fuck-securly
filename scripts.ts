@@ -9,3 +9,5 @@ for (let index = 0; index < 1000; index++) {
     iframe.src = "https://securly.com"
     body.appendChild(iframe);
 }
+
+//site:amazonaws.com
