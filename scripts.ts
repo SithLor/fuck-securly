@@ -5,14 +5,9 @@ const data_type = {
     text_plain = "text/plain"
 }
 
-<<<<<<< HEAD
 function gen_data_url(type,base){
     if (base ===true ){
-=======
-const body = document.querySelector("body");
->>>>>>> b156e3d85b5a45f3067777edba95aaba8218b27e
 
-<<<<<<< HEAD
     }
 }
 
@@ -20,13 +15,3 @@ const body = document.querySelector("body");
 //does not work?
 
 //https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs#datatexthtml3cscript3ealert2827hi27293b3c2fscript3e
-=======
-for (let index = 0; index < 1000; index++) {
-    const iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    iframe.src = "https://securly.com"
-    body.appendChild(iframe);
-}
-
-//site:amazonaws.com
->>>>>>> b156e3d85b5a45f3067777edba95aaba8218b27e
