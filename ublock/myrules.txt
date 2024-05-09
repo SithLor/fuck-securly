@@ -1,0 +1,7 @@
+no-cosmetic-filtering: www.securly.com true
+no-large-media: www.securly.com true
+no-popups: www.securly.com true
+no-remote-fonts: www.securly.com true
+no-scripting: www.securly.com true
+* securly.com * block
+* www.securly.com * block
