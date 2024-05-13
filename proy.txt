@@ -4,6 +4,15 @@ ip:
 204.110.220.77
     notes: browering google
     isp:Securly Inc
-54.193.199.220
+
+##https://www.showmyip.com/dns-lookup/
+
+CNAME:6b42a06eb8958cc9afa8345a90070862sync.pacrpc.uswest2.v1api.securly.com	
+    A_RECORD: uswest-www-alb-1430906465.us-west-1.elb.amazonaws.com 52.8.211.86
+              uswest-www-alb-1430906465.us-west-1.elb.amazonaws.com	52.8.68.32	
+              uswest-www-alb-1430906465.us-west-1.elb.amazonaws.com	52.9.208.86	
+              uswest-www-alb-1430906465.us-west-1.elb.amazonaws.com	52.9.10.103	
+    A_RECORD_TTL:60
+
     
 
