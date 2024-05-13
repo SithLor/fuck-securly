@@ -1,0 +1,9 @@
+securly use proxy and ssl deycption  to decode your traffic on siretne site 
+
+ip:
+204.110.220.77
+    notes: browering google
+    isp:Securly Inc
+54.193.199.220
+    
+
