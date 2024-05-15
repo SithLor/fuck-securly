@@ -2,6 +2,9 @@ securly use proxy and ssl deycption  to decode your traffic on siretne site
 
 ip:
 204.110.220.77
+204.110.220.160
+204.110.220.42
+
     notes: browering google
     isp:Securly Inc
 
@@ -13,6 +16,13 @@ CNAME:6b42a06eb8958cc9afa8345a90070862sync.pacrpc.uswest2.v1api.securly.com
               uswest-www-alb-1430906465.us-west-1.elb.amazonaws.com	52.9.208.86	
               uswest-www-alb-1430906465.us-west-1.elb.amazonaws.com	52.9.10.103	
     A_RECORD_TTL:60
+
+CNAME:securly.com
+    A:52.8.68.32	
+    A:54.219.146.182	
+    A:52.9.10.103
+    A:52.9.179.22
+
 
     
 
