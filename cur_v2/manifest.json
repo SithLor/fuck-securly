@@ -1,0 +1,172 @@
+//chrome-extension://knneimmpeamikmjijmnhjmmobddleohj/content.min.js
+{
+    "background": {
+      "persistent": true,
+      "scripts": [
+        "conf.min.js",
+        "securly.min.js"
+      ]
+    },
+    "content_scripts": [
+      {
+        "all_frames": true,
+        "js": [
+          "content.min.js"
+        ],
+        "matches": [
+          "*://*.youtube.com/*",
+          "*://youtube.com/*",
+          "*://youtube-nocookie.com/*",
+          "*://*.youtube-nocookie.com/*"
+        ],
+        "run_at": "document_idle"
+      },
+      {
+        "all_frames": true,
+        "js": [
+          "content2.min.js"
+        ],
+        "matches": [
+          "*://*.google.com/maps/*",
+          "*://google.com/maps/*"
+        ],
+        "run_at": "document_idle"
+      },
+      {
+        "all_frames": true,
+        "js": [
+          "content3.min.js"
+        ],
+        "matches": [
+          "*://bing.com/search*",
+          "*://www.bing.com/search*",
+          "*://search.yahoo.com/search*",
+          "*://www.search.yahoo.com/search*",
+          "*://youtube.com/*",
+          "*://www.youtube.com/*",
+          "*://google.com/search*",
+          "*://www.google.com/search*",
+          "*://google.co.uk/search*",
+          "*://www.google.co.uk/search*",
+          "*://google.ie/search*",
+          "*://www.google.ie/search*",
+          "*://google.ca/search*",
+          "*://www.google.ca/search*",
+          "*://google.com.au/search*",
+          "*://www.google.com.au/search*",
+          "*://google.co.in/search*",
+          "*://www.google.co.in/search*"
+        ],
+        "run_at": "document_idle"
+      },
+      {
+        "all_frames": true,
+        "js": [
+          "content6.min.js"
+        ],
+        "matches": [
+          "*://meet.google.com/*"
+        ],
+        "run_at": "document_idle"
+      },
+      {
+        "all_frames": false,
+        "js": [
+          "content4.min.js"
+        ],
+        "matches": [
+          "\u003Call_urls\u003E"
+        ],
+        "run_at": "document_idle"
+      },
+      {
+        "all_frames": true,
+        "js": [
+          "content7.min.js"
+        ],
+        "matches": [
+          "*://chat.google.com/*"
+        ],
+        "run_at": "document_idle"
+      },
+      {
+        "all_frames": true,
+        "include_globs": [
+          "https://www.google.*/*"
+        ],
+        "js": [
+          "content8.min.js"
+        ],
+        "matches": [
+          "https://*/*"
+        ],
+        "run_at": "document_idle"
+      },
+      {
+        "all_frames": true,
+        "js": [
+          "content9.min.js"
+        ],
+        "matches": [
+          "\u003Call_urls\u003E"
+        ],
+        "run_at": "document_start"
+      },
+      {
+        "all_frames": true,
+        "js": [
+          "content10.min.js"
+        ],
+        "matches": [
+          "\u003Call_urls\u003E"
+        ],
+        "run_at": "document_start"
+      },
+      {
+        "all_frames": true,
+        "js": [
+          "content5.min.js"
+        ],
+        "matches": [
+          "\u003Call_urls\u003E"
+        ],
+        "run_at": "document_idle"
+      }
+    ],
+    "description": "Secure and manage your 1:1 Chromebooks with Securly",
+    "icons": {
+      "128": "icon128.png",
+      "16": "icon16.png",
+      "48": "icon48.png"
+    },
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7Hyla4mUP54NllUaJKlH1fKshfUXc7j2WPMzgtL/uZvtzo0FWHT+LbXl9MgyEFsHREzkr/T3CG9KG8HG2aKizp5AKEZI28DGtl/VP0a6/p+eENfOqg1GnzdRF75Gr0cL1Fi+q/3Bn1klNGW5TIFQhOrJSQAYhOWcfo2criQwOWKQWHLkeUd/X4CD+yFwXmQleM2QrWLg5C0nTfqrNaIfWXLWkpwXn8GMJNpXcM+4gIDe5vghkvG7VJGNw8xxHrck+sJPGxqx960XhP2AvRxZFNsZvBz6bFBSA5KUBk62j/rDyqxNVC9kGtROXNrqf9uj7W0FZz/EKjWFypZtIOK0MwIDAQAB",
+    "manifest_version": 2,
+    "name": "Securly for Chromebooks",
+    "oauth2": {
+      "client_id": "979354546084.apps.googleusercontent.com",
+      "scopes": [
+        "email"
+      ]
+    },
+    "permissions": [
+      "webRequest",
+      "webRequestBlocking",
+      "identity",
+      "*://*/",
+      "file://*",
+      "cookies",
+      "tabs",
+      "browsingData",
+      "identity.email",
+      "geolocation",
+      "idle",
+      "downloads",
+      "webNavigation"
+    ],
+    "short_name": "Securly",
+    "version": "2.98.60",
+    "web_accessible_resources": [
+      "fonts/*",
+      "*.svg"
+    ]
+  }
