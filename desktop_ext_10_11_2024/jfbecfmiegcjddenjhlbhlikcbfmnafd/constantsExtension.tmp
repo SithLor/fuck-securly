@@ -1,0 +1,5 @@
+const IS_KIOSK = false;
+const IS_EXTENSION = true;
+const NATIVE_HOST_V1_NAME = "com.securly.classroom.windows.agent"; //"com.google.chrome.example.echo";//
+const NATIVE_HOST_V2_NAME = "com.securly.classroom_native_host";
+const REASON_WINDOWS_NOT_ALLOWED = "win_not_allowed";

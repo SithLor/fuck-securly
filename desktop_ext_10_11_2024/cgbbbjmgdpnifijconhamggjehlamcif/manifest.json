@@ -1,0 +1,28 @@
+{
+   "background": {
+      "scripts": [ "vendor/jquery/dist/jquery.js", "vendor/angular/angular.js", "vendor/lodash/lodash.js", "vendor/q/q.js", "app.config.js", "buildInfo.js", "scripts/analytics.lib.js", "scripts/sessions.lib.js", "scripts/pubsub.lib.js", "background.js", "debug.js" ]
+   },
+   "browser_action": {
+      "default_icon": "images/gopher-buddy_128x128_color.png",
+      "default_popup": "templates/popup.html",
+      "default_title": "Gopher Buddy"
+   },
+   "content_scripts": [ {
+      "js": [ "scripts/content_script.js" ],
+      "matches": [ "https://gopher-buddy-prod.appspot.com/*", "https://gopher-buddy-dev.appspot.com/*" ],
+      "run_at": "document_idle"
+   } ],
+   "description": "Installed by your Google Workspace for Education admin. Tracks IP, user, timestamp data for school managed devices and users only.",
+   "icons": {
+      "128": "images/gopher-buddy_128x128_color.png",
+      "32": "images/gopher-buddy_32x32_color.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqw9PeW5OiqqNQ1FiFNBmRcVqRCZ2CiGxI8bthhgdd6NdTWIzuoaJFyroyHOott79erUIHb+V7sWwUdERwNsYJeN6ViB9XtfgGx7d+yyDCHBmCXzBp+HNkRGMvl+dm91UZkr/zNa3GnXU5Lc/lDb9b3Nl2se/VV0uSWF1BOCmPdqBwFtWHtaiS4bJ6bj+zjyPnoUYfprrxLdzVGWFVcSilEooYT4ODwvZ2aPUOwiBmZdFgRmbh97WXpjLXDt6cFeJ+EZCjxJ5prRRxZmdRxotQl627qfa2u3sW1YObDO6TZ8T8gARX/yoIUeOIyEpuvXnuL4Y7BMwqeqSYwI3o2ytxQIDAQAB",
+   "manifest_version": 2,
+   "name": "Gopher Buddy",
+   "permissions": [ "alarms", "storage", "notifications", "idle", "identity", "identity.email", "enterprise.deviceAttributes", "browsingData" ],
+   "short_name": "GB",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.9.9.3",
+   "web_accessible_resources": [ "images/gopher-buddy_128x128_color.png", "images/chrome_gopher_unhappy_128.png", "images/check.png", "images/clock.png" ]
+}

@@ -1,0 +1,114 @@
+// Functions related to windows agent interactions
+const AGENT_CLOSE_APP = "closeApp";
+const AGENT_GET_APPS = "apps";
+const AGENT_HANDSHAKE = "handshake";
+const AGENT_LOGGING = "logging";
+const AGENT_REQUEST_SCREENSHOT = "screenshot";
+const AGENT_SHUTDOWN = "shutdown";
+const AGENT_UPGRADE = "upgrade";
+
+class NativeAgentCommunicator {
+  constructor() {
+    this.onDisconnectListener = this.onDisconnectListener.bind(this);
+    this.onMessageListener = this.onMessageListener.bind(this);
+  }
+
+  connect(listener) {
+    this.listener = listener;
+    this.port = chrome.runtime.connectNative(NATIVE_HOST_V1_NAME);
+    this.port.onMessage.addListener(this.onMessageListener);
+    this.port.onDisconnect.addListener(this.onDisconnectListener);
+  }
+
+  onMessageListener(message) {
+    console.log("Native agent sent a message=" + JSON.stringify(message));
+    this.listener(message);
+  }
+
+  onDisconnectListener() {
+    if (chrome.runtime.lastError) {
+      console.log("Native agent disconnected due to error=" + JSON.stringify(chrome.runtime.lastError));
+    }
+    this.port = null;
+    this.listener = null;
+  }
+
+  get isConnected() {
+    return this.port != null;
+  }
+
+  sendMessage(message) {
+    if (this.port) {
+      try {
+        this.port.postMessage(message);
+        console.log("Native agent received a message=" + JSON.stringify(message));
+      } catch (error) {
+        if (hasText(error.message, ERROR_DISCONNECTED_PORT)) {
+          this.port = null;
+        } else {
+          console.log("Native agent message sent error=" + error.message);
+        }
+      }
+    }
+    return this.port != null;
+  }
+
+  closeApp(appName, userId) {
+    return this.sendMessage({
+      action: AGENT_CLOSE_APP,
+      app: appName,
+      userId: userId
+    });
+  }
+
+  handshake() {
+    return this.sendMessage({
+      action: AGENT_HANDSHAKE,
+      udid: config.deviceUdid,
+      server: config.serverUrl
+    });
+  }
+
+  requestScreenshot(url, maxWidth, maxHeight) {
+    const message = {
+      url: url,
+      action: AGENT_REQUEST_SCREENSHOT
+    }
+    if (maxWidth) {
+      message["maxWidth"] = maxWidth;
+    }
+    if (maxHeight) {
+      message["maxHeight"] = maxHeight;
+    }
+    return this.sendMessage(message);
+  }
+
+  updateLogging(isActive) {
+    return this.sendMessage({
+      action: AGENT_LOGGING,
+      isActive: isActive
+    });
+  }
+
+  requestAppList(userId) {
+    return this.sendMessage({
+      action: AGENT_GET_APPS,
+      userId: userId
+    });
+  }
+
+  shutdown() {
+    return this.sendMessage({action: AGENT_SHUTDOWN});
+  }
+
+  requestUpgrade(version, url, sha) {
+    const message = {
+      "action": AGENT_UPGRADE,
+      "version": version,
+      "url": url,
+      "sha": sha
+    }
+    return this.sendMessage(message);
+  }
+}
+var nativeAgent = new NativeAgentCommunicator();

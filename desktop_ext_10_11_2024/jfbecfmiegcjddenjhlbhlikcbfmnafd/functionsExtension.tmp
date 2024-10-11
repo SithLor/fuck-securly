@@ -1,0 +1,951 @@
+"use strict";
+
+class IconManager {
+  constructor() {
+    this.active = false;
+    this.sharesScreen = false;
+  }
+
+  isActive() {
+    return this.active;
+  }
+
+  activeClassIcon() {
+    chrome.browserAction.setIcon({path: "logo16.png"}, function () {
+      iconManager.active = true;
+    });
+  }
+
+  noActiveClassIcon() {
+    chrome.browserAction.setIcon({path: "logo16mono.png"}, function () {
+      iconManager.active = false;
+    });
+  }
+
+  raiseHandIcon() {
+    chrome.browserAction.setIcon({path: "hand.png"});
+  }
+
+  shareScreenIcon() {
+    chrome.browserAction.setIcon({path: "logo16share.png"}, function() {
+      iconManager.sharesScreen = true;
+    });
+  }
+
+  noShareScreenIcon() {
+    let path = this.active ? "logo16.png" : "logo16mono.png";
+    chrome.browserAction.setIcon({path: path}, function() {
+      iconManager.sharesScreen = false;
+    });
+  }
+
+  clearRaiseHandIcon() {
+    if (this.sharesScreen) {
+      this.shareScreenIcon();
+    } else if (this.active) {
+      this.activeClassIcon();
+    } else {
+      this.noActiveClassIcon();
+    }
+  }
+
+
+
+  static markNotAuthorized() {
+    chrome.browserAction.setBadgeText({text: "!"});
+    chrome.browserAction.setBadgeBackgroundColor({color: "#F00"});
+  }
+
+  static clearBadge() {
+    chrome.browserAction.setBadgeText({text: ""});
+  }
+}
+
+function updateTabListeners() {
+  const listenersShouldBeAdded = config.isClassSessionActive;
+  if (!config.tabListenersAdded && listenersShouldBeAdded) {
+    chrome.tabs.onActivated.addListener(tabListenerOnActivate);
+    chrome.tabs.onCreated.addListener(tabListenerOnCreate);
+    chrome.tabs.onUpdated.addListener(tabListenerOnUpdate);
+    config.tabListenersAdded = true;
+  } else if (config.tabListenersAdded && !listenersShouldBeAdded) {
+    chrome.tabs.onActivated.removeListener(tabListenerOnActivate);
+    chrome.tabs.onCreated.removeListener(tabListenerOnCreate);
+    chrome.tabs.onUpdated.removeListener(tabListenerOnUpdate);
+    config.tabListenersAdded = false;
+  }
+}
+
+function updateIdleListeners(idleTimeout) {
+  if (idleTimeout > 0) {
+    chrome.idle.setDetectionInterval(idleTimeout * 60);
+    chrome.idle.onStateChanged.addListener(idleStateListener);
+  } else {
+    chrome.idle.onStateChanged.removeListener(idleStateListener);
+  }
+}
+
+function idleStateListener(idleState) {
+  const message = {
+    response: COMMAND_IDLE_STATUS_CHANGE,
+    isIdle: idleState !== "active"
+  }
+  router.sendCommand(message);
+}
+
+async function updateLockStatus(clearTabsCloseWarning) {
+  const tabs = await getChromeTabs({});
+  for (const tab of tabs) {
+    try {
+      await sendLockStatusToTab(tab, "onApply", clearTabsCloseWarning);
+      await updateTab(tab.id, {muted: config.isScreenLocked});
+    } catch (error) {
+      console.log("Error updating lock status: " + error);
+    }
+  }
+}
+
+function updateWindowListeners() {
+  if (config.isClassSessionActive) {
+    const needFocusListener = (config.isScreenLocked || config.maximizeFocusedWindow) &&
+        !chrome.windows.onFocusChanged.hasListener(windowFocusChangeListener);
+    const needBoundsListener = config.maximizeFocusedWindow &&
+        !chrome.windows.onBoundsChanged.hasListener(windowBoundsChangeListener);
+    const needRemoveListener = config.isScreenLocked && !chrome.windows.onRemoved.hasListener(windowRemoveListener);
+    if (needFocusListener) {
+      chrome.windows.onFocusChanged.addListener(windowFocusChangeListener);
+    }
+    if (needBoundsListener) {
+      chrome.windows.onBoundsChanged.addListener(windowBoundsChangeListener);
+      chrome.windows.onCreated.addListener(windowBoundsChangeListener);
+    }
+    if (needRemoveListener) {
+      chrome.windows.onRemoved.addListener(windowRemoveListener);
+    }
+  } else {
+    chrome.windows.onFocusChanged.removeListener(windowFocusChangeListener);
+    chrome.windows.onRemoved.removeListener(windowRemoveListener);
+    chrome.windows.onBoundsChanged.removeListener(windowBoundsChangeListener);
+    chrome.windows.onCreated.removeListener(windowBoundsChangeListener);
+  }
+}
+
+async function windowFocusChangeListener(param) {
+  if (config.maximizeFocusedWindow && !config.isScreenLocked && typeof param == "number"
+      && param !== chrome.windows.WINDOW_ID_NONE && param !== config.blockWindowId) {
+    await updateWindow(param, {state: "maximized"});
+    return;
+  }
+  if (!config.isScreenLocked  || !config.isChromeBook) {
+    return;
+  }
+  if (!config.blockWindowId) {
+    const focusedWindow = await getFocusedWindow();
+    if (!focusedWindow) {
+      return;
+    }
+    config.blockWindowId = focusedWindow.id;
+  }
+  if (typeof param == "undefined" ||
+      (typeof param == "number" && (param === chrome.windows.WINDOW_ID_NONE || param !== config.blockWindowId))) {
+    await updateWindowFullscreen(config.blockWindowId);
+  }
+}
+
+async function windowRemoveListener(param) {
+  if (!config.isScreenLocked) {
+    return;
+  }
+  if (config.blockWindowId === param) {
+    setTimeout(async () => {
+      try {
+        config.blockWindowId = await openLockWindow();
+        await updateWindowFullscreen(config.blockWindowId);
+      } catch (error) {
+        console.log("Cannot make window fullscreen: " + error);
+      }
+    }, 1000);
+  }
+}
+
+async function windowBoundsChangeListener(window) {
+  if (window.type !== "normal" || window.id === config.blockWindowId || window.state === "fullscreen") {
+    return;
+  }
+  try {
+    await updateWindow(window.id, {state: "maximized"})
+  } catch (error) {
+    console.log("Cannot maximize window: " + error);
+  }
+}
+
+function nativeAgentMessageListener(message) {
+  const action = message["action"];
+  switch (action) {
+    case AGENT_CLOSE_APP:
+      const response = {
+        response: REQUEST_CLOSE_APP,
+        app: message["app"],
+        userId: message["userId"],
+        isClosed: true
+      };
+      if (!message["isClosed"]) {
+        response["isClosed"] = false;
+        response["error"] = message["error"];
+      }
+      router.sendCommand(response);
+      break;
+    case AGENT_HANDSHAKE:
+      if (typeof lg !== "undefined") {
+        nativeAgent.updateLogging(lg.logEnabled)
+      }
+      const version = message["version"];
+      console.log("Native agent communication established. Version=" + version);
+      router.sendCommand({
+        response: COMMAND_WINDOWS_AGENT_INFO,
+        agentVersion: version
+      });
+      setTitle(TITLE_CLASS_SESSION, version);
+      break;
+    case AGENT_GET_APPS:
+      sendAppList(message["appList"], message["userId"]);
+      break;
+    default:
+      console.log("Native agent sent unknown command=" + action);
+  }
+}
+
+async function updateChatStatus(chatMessage) {
+  const tabs = await getChromeTabs({});
+  for (const tab of tabs) {
+    try {
+      await sendChatStatusToTab(tab, "onApply", chatMessage);
+    } catch (error) {
+      console.log("Catched update chat state error for tab=" + tab.id + " '" + tab.url + "': " + error);
+    }
+  }
+}
+
+async function checkMaxTabs(tab) {
+  if (config.maxOpenTabs > 0) {
+    let tabs = await getChromeTabs({});
+    if (checkMaxTabs.bypass) {
+      checkMaxTabs.bypass = false;
+      return Promise.resolve(true);
+    }
+    if (tabs.length > config.maxOpenTabs) {
+      if (typeof tab.id != "undefined") {
+        closeTab(tab.id);
+      } else {
+        console.log("Cannot close tab, no tab.id");
+        return Promise.resolve(false)
+      }
+    }
+  }
+  return Promise.resolve(true);
+}
+checkMaxTabs.bypass = false;
+
+function tabListenerOnActivate(activeTabInfo) {
+  const activeTabId = activeTabInfo["tabId"];
+  if (config.activeTabId == null) {
+    config.activeTabId = activeTabId;
+    return;
+  }
+  if (config.activeTabId !== activeTabId && config.isChatActive) {
+    const messageToClose = {
+      command: "chatStatus",
+      chat: true,
+      forceCloseChat: true
+    };
+    sendCommandToTab(config.activeTabId, messageToClose)
+        .then(() => {
+          console.log("Command to close chat in tabId=" + config.activeTabId + " sent. New active tabId=" + activeTabId);
+          config.activeTabId = activeTabId;
+        })
+        .catch(error => {
+          console.log("Error=" + error + ". Command to close chat in tabId=" + config.activeTabId + " NOT sent. New active tabId=" + activeTabId);
+        });
+    if (config.hasUnreadChatMessages && config.forceOpenChat) {
+      const messageToOpen = {
+        command: "chatStatus",
+        chat: true,
+        forceOpenChat: true
+      }
+      sendCommandToTab(activeTabId, messageToOpen)
+          .then(() => {
+            console.log("Command to open chat in tabId=" + activeTabId + " sent.")
+          })
+          .catch(error => {
+            console.log("Error= " + error + ". Command to open chat in tabId=" + activeTabId + " NOT sent.")
+          });
+    }
+  }
+}
+
+async function tabListenerOnCreate(tab) {
+  const messageType = "onCreate";
+  if (config.conferenceUrl !== null && tab.status === "loading") {
+    // Bypass check for not loaded tab to prevent close on creation if tabs limit is set and reached
+    // Needed to allow an opening of a new video conference tab
+    return;
+  }
+  if (tab.url && config.conferenceUrl === tab.url) {
+    // Allow own video features pages
+    return;
+  }
+  const shallContinue = await checkMaxTabs(tab);
+  if (!shallContinue) {
+    console.log("Catched on tab create listener error: Tabs limit exceeded");
+  } else if (config.isChatActive) {
+    return sendChatStatusToTab(tab, messageType);
+  }
+}
+
+async function tabListenerOnUpdate(tabId, changeInfo, tab) {
+  const messageType = "onUpdate";
+  if (changeInfo.status === "complete") {
+    if (config.conferenceUrl !== null && 
+        (typeof tab.url === "undefined" || config.conferenceUrl === tab.url)) {
+      // Bypass check number of tabs for conference tab. It may have no url at start
+      return;
+    }
+    const shallContinue = await checkMaxTabs(tab);
+    try {
+      if (shallContinue && config.isChatActive) {
+        await sendChatStatusToTab(tab, messageType);
+      }
+      if (shallContinue && config.isScreenLocked) {
+        await sendLockStatusToTab(tab, messageType);
+      }
+    } catch(error) {
+      console.log("Catched on tab update listener error: " + JSON.stringify(error));
+    }
+  }
+}
+
+async function sendLockStatusToTab(tab, messageType, clearTabsCloseWarning) {
+  if (typeof tab.status === "undefined" || typeof tab.url === "undefined") {
+    return;
+  }
+  if (typeof tab.id === "number") {
+    if (!isAllowed(tab.url, ["https?:\\/\\/chrome\\.google\\.com\\/webstore\\/?.*?"], false) &&
+        (config.isScreenLocked || config.whitelist || config.announce !== null)) {
+      closeTab(tab.id);
+      return;
+    }
+    let lockMessage = null;
+    if (config.isScreenLocked) {
+      lockMessage = config.blockedText;
+    } else if (config.whitelist && !isAllowed(tab.url, config.whitelist, true)) {
+      lockMessage = config.isSiteLocked ? "This site is not available during site lock" :
+          "This site is currently unavailable due to an active blocking plan"
+    } else if (config.blockingPlanType === BLOCK_TYPE_BLOCK_ONLY && config.blockingPlanUrls
+        && !isAllowed(tab.url, config.blockingPlanUrls, false)) {
+        lockMessage = "This site is currently unavailable due to an active blocking plan";
+    }
+    const showWarning = (config.closeTabsTimeout !== null && !clearTabsCloseWarning) ? true : null;
+    const tabLockMessage = {
+      command: "lockStatus",
+      announce: config.announce,
+      announceTitle: "Announcement from" + (config.teacherName ? (": " + config.teacherName) : " your teacher"),
+      lock: lockMessage,
+      tabsCloseWarning: showWarning,
+      messageType: messageType
+    };
+    try {
+      await sendCommandToTab(tab.id, tabLockMessage);
+    } catch (error) {
+      if (error.indexOf("chrome://") !== -1) {
+        closeTab(tab.id);
+      } else {
+        console.log("Lock not sent to tab '" + tab.id + " {status:" + tab.status + ", discarded:" + tab.discarded + "} " + tab.title + "'. Error: " + error);
+      }
+    }
+  }
+}
+
+async function sendChatStatusToTab(tab, messageType, chatMessage) {
+  if (typeof tab.status === "undefined" || typeof tab.url === "undefined") {
+    return Promise.resolve();
+  }
+  return new Promise(async (resolve, reject) => {
+    if (typeof tab.id === "number") {
+      const tabChatMessage = {
+        command: "chatStatus",
+        messageType: messageType
+      };
+      if (config.isChatActive) {
+        tabChatMessage["chat"] = true;
+        if (chatMessage) {
+          tabChatMessage["chatMessage"] = chatMessage;
+        } else if (config.hasUnreadChatMessages) {
+          tabChatMessage["chatMessage"] = config.chatMessages[config.chatMessages.length - 1];
+        }
+        if (tabChatMessage["chatMessage"] && tab.highlighted && config.forceOpenChat) {
+          tabChatMessage["forceOpenChat"] = true;
+        }
+      } else {
+        tabChatMessage["chat"] = false;
+      }
+      console.log("Send chat status message=" + JSON.stringify(tabChatMessage) + " tabId=" + tab.id + " '" + tab.url + "'");
+      try {
+        await sendCommandToTab(tab.id, tabChatMessage);
+        resolve();
+      } catch (error) {
+        reject("Failed to send chat status:" + error);
+      }
+    }
+  });
+}
+
+function openSites(urls) {
+  let p = Promise.resolve();
+  urls.forEach(url => {
+    p = p.then(() => {
+      return openNewTab({url: url, active: true});
+    })
+  });
+  p.catch(error => {
+    console.log("Error while open sites: " + error);
+  });
+  return p;
+}
+
+async function closeTabs(openedTabs, keepBlankTabOpen) {
+  if (!openedTabs || openedTabs.length === 0) {
+    return Promise.resolve();
+  }
+  const tabIds = openedTabs.map(tab => tab.id);
+  if (keepBlankTabOpen) {
+    checkMaxTabs.bypass = true;
+    await openNewTab({});
+  }
+  return closeTab(tabIds);
+}
+
+async function warnAboutTabsClose(seconds) {
+  let tabs = await getChromeTabs({});
+  const tabCloseWarnMessage = {
+    command: "tabCloseWarning",
+    delaySeconds: seconds
+  };
+  for (const tab of tabs) {
+    if (typeof tab.status === "undefined" || typeof tab.url === "undefined") {
+      return;
+    }
+    if (typeof tab.id === "number") {
+      try {
+        await sendCommandToTab(tab.id, tabCloseWarnMessage);
+      } catch (error) {
+        console.log("Error while apply tabs close warning: " + error);
+      }
+    }
+  }
+}
+
+async function siteLock(urls, shouldCloseTabs, notOpenTabs = false) {
+  try {
+    await updateLockStatus();          // Unlock screen if locked
+    let openedTabs;
+    if (shouldCloseTabs) {
+      openedTabs = await getChromeTabs({});
+    }
+    if (!notOpenTabs) {
+      const windows = await getWindows();
+      if (!windows || windows.length === 0) {
+        await createWindow(urls);
+      } else {
+        await openSites(urls);
+      }
+    }
+    if (shouldCloseTabs) {
+      await closeTabs(openedTabs, notOpenTabs);
+    }
+  } catch (error) {
+    console.log("Error while site lock: " + JSON.stringify(error));
+  }
+}
+
+function extractCanvasAssignmentIds(urls) {
+  const assignmentIdPattern = /\/courses\/\d+\/assignments\/(\d+)/;
+  const ids = [];
+  for (const url of urls) {
+    const match = url.match(assignmentIdPattern);
+    if (match && match.length > 1) {
+      ids.push(match[1]);
+    }
+  }
+  return ids;
+}
+
+async function closeSharedScreenTab() {
+  const pattern = config.serverUrl + "/screenshare*";
+  const tabs = await getChromeTabs({url: pattern});
+  for (const tab of tabs) {
+    if (tab.id) {
+      await closeTab(tab.id);
+    }
+  }
+}
+
+function updateIconAndTitle(isSessionActive, hasWindowsAgent) {
+  if (!iconManager) {
+    iconManager = new IconManager();
+  }
+  if (isSessionActive) {
+    iconManager.activeClassIcon();
+    setTitle(TITLE_CLASS_SESSION);
+  } else {
+    iconManager.noActiveClassIcon();
+    setTitle();
+  }
+}
+
+function setTitle(message, windowsAgentVersion) {
+  const titleDetails = {};
+  if (typeof message !== "undefined") {
+    let title = message + "\n";
+    if (typeof windowsAgentVersion !== "undefined") {
+      title += "Windows agent " + windowsAgentVersion + "\n";
+    }
+    titleDetails["title"] =  title + VERSION;
+  } else {
+    titleDetails["title"] = VERSION;
+  }
+  chrome.browserAction.setTitle(titleDetails);
+}
+
+function updatePopup(isSessionActive) {
+  const popup = isSessionActive ? "popup.html" : "";
+  chrome.browserAction.setPopup({popup: popup}, () => {
+    console.log("Popup set to " + (isSessionActive ? popup : "none"));
+  });
+}
+
+function clearTeacherMessage() {
+  const message = createAnnouncementResponse(true);
+  config.announce = null;
+  config.teacherId = null;
+  updateTabListeners();
+  updateLockStatus()
+      .then(router.sendCommand(message));
+}
+
+function createAnnouncementResponse(isRead) {
+  return {
+    response: REQUEST_TEACHER_MESSAGE,
+    isConfirmed: isRead,
+    teacherId: config.teacherId
+  };
+}
+
+function updateMessageListener(isSessionActive) {
+  if (isSessionActive) {
+    chrome.runtime.onMessage.addListener(pageMessageListener);
+    console.log("MESSAGE LISTENER ADDED");
+  } else {
+    chrome.runtime.onMessage.removeListener(pageMessageListener);
+    console.log("MESSAGE LISTENER REMOVED");
+  }
+}
+
+function pageMessageListener(request, sender, response) {
+  console.log("Got message from tab=" + JSON.stringify(sender.tab) + " Message=" + JSON.stringify(request));
+  const action = request["action"];
+  switch (action) {
+    case "popup":
+      return processPopupMessages(request, sender, response);
+    case "notfound":
+      processNotFoundPageMessages(request, sender, response);
+      return true;
+    case "teacherMessage":
+      clearTeacherMessage();
+      break;
+    case "clearTabsCloseWarning":
+      updateTabListeners();
+      updateLockStatus(true);
+      console.log("Tabs close warning cleared by student");
+      response();
+      break;
+    case "respondToShareScreen":
+      processShareScreenResponse(request);
+      break;
+    case "chat":
+      return processChatMessages(request, sender, response);
+    case "resizeLocked":
+      windowFocusChangeListener();
+      break;
+    case "getLockText":
+      if (config.isScreenLocked) {
+        response(config.blockedText);
+      } else {
+        response(null);
+      }
+      break;
+    case "call":
+      response({token: config.conferenceToken, studentName: config.studentName});
+      break;
+    case "suspicious":
+      response(null);
+      if (sender.tab.url === "about:blank") {
+        console.log("Closing suspicious tab: " + JSON.stringify(sender.tab));
+        closeTab(sender.tab.id);
+      }
+      break;
+    default:
+      console.log("Received incorrect message in pageMessageListener=" + JSON.stringify(request));
+  }
+}
+
+function processShareScreenResponse(request) {
+  updateLockStatus();
+  const maxWH = 1024;
+  const isConfirmed = request["isConfirmed"];
+  const message = {
+    response: REQUEST_SHARE_STUDENT_SCREEN,
+    userId: request["userId"],
+    lock: request["lock"],
+    isConfirmed: isConfirmed
+  }
+  router.sendCommand(message);
+  if (isConfirmed) {
+    const deviceId = request["deviceId"];
+    const shareScreenUrl = config.serverUrl + "/agent/sharescreen/upload?did=" + deviceId;
+    config.shareScreenHandler = setInterval(shareScreen, 4000, shareScreenUrl, maxWH);
+    iconManager.shareScreenIcon();
+  }
+}
+
+async function shareScreen(shareScreenUrl, maxWH) {
+    let isRequestedFromAgent = false;
+    if (nativeAgent.isConnected) {
+      isRequestedFromAgent = nativeAgent.requestScreenshot(shareScreenUrl, maxWH, maxWH)
+    }
+    if (!isRequestedFromAgent) {
+      try {
+        config.capturedScreen = await captureVisibleTab();
+      } catch (error) {
+        console.log("Cannot capture visible tab: " + error);
+        return;
+      }
+      const blob = await resizeImage(config.capturedScreen, maxWH, maxWH);
+      const shallContinue = await performSendScreenshotRequest(shareScreenUrl, blob);
+      if (!shallContinue) {
+        stopSharingScreen();
+      }
+    } else {
+      console.log("Screenshot requested from native agent");
+    }
+}
+
+function processPopupMessages(request, sender, response) {
+  let canStart = false;
+  const action = request["popup"];
+  switch (action) {
+    case "hello":
+      getChromeTabs({currentWindow: true, active: true})
+          .then(tabs => {
+            if (tabs && tabs.length > 0) {
+              const url = tabs[0].url;
+              if (url && !url.toLowerCase().includes("newtab")) {
+                canStart = config.canStartChat || config.isChatActive;
+              }
+            }
+          })
+          .catch(error => {
+            console.log("Error responding to popup=" + error);
+          })
+          .finally(() => {
+            response({
+              raiseHandEnabled: config.canRaiseHand,
+              isHandRaised: config.isHandRaised,
+              isSharingScreen: config.shareScreenHandler !== null,
+              canStartChat: canStart,
+            });
+          })
+      return true;
+    case "handRaiseClick":
+      config.isHandRaised = !config.isHandRaised;
+      response({
+        raiseHandEnabled: config.canRaiseHand,
+        isHandRaised: config.isHandRaised
+      });
+      if (config.isHandRaised) {
+        iconManager.raiseHandIcon()
+      } else {
+        iconManager.clearRaiseHandIcon()
+      }
+      router.sendCommand({response: COMMAND_HAND_RAISED, isHandRaised: config.isHandRaised})
+      break;
+    case "startChatClick":
+      response();
+      getChromeTabs({currentWindow: true, active: true})
+          .then(tabs => {
+            if (tabs && tabs.length > 0) {
+              const chatMessage = {
+                command: "chatStatus",
+                chat: true,
+                forceOpenChat: true
+              };
+              sendCommandToTab(tabs[0].id, chatMessage);
+              console.log("Sent message to tabId=" + tabs[0].id);
+            } else {
+              console.log("Cannot open chat from popup - no active tab");
+            }
+          });
+  }
+}
+
+async function processNotFoundPageMessages(request, sender, response) {
+  const message = {reason: config.loginErrorReason};
+  const directoryDeviceId = await getDirectoryDeviceId();
+  if (directoryDeviceId) {
+    message["directoryDeviceId"] = directoryDeviceId;
+  }
+  const serialNumber = await getSerialNumber();
+  if (serialNumber) {
+      message["serialNumber"] = serialNumber;
+  }
+  response(message);
+}
+
+function processChatMessages(request, sender, response) {
+  const command = request["command"];
+  switch (command) {
+    case "getChatMessages":
+      config.hasUnreadChatMessages = false;
+      response({
+        chatMessages: config.chatMessages
+      });
+      break;
+    case "sendMessage":
+      response();
+      const chatMessage = {
+        sessionId: config.sessionId,
+        text: request["text"],
+        response: REQUEST_CHAT_MESSAGE
+      };
+      const studentMessage = {
+        date: (new Date()).toUTCString(),
+        isFromTeacher: false,
+        text: request["text"]
+      };
+      config.chatMessages.push(studentMessage);
+      router.sendCommand(chatMessage)
+          .catch(error => {
+            console.log("Chat message send failed: " + JSON.stringify(error));
+          });
+      break;
+    default:
+      response({
+        chat: config.isChatActive,
+        unread: config.hasUnreadChatMessages
+      });
+  }
+}
+
+function showNotification(id, title, message) {
+  chrome.notifications.clear(id, function (wasCleared) {
+    chrome.notifications.create(id, {
+      title: title,
+      iconUrl: 'logo48.png',
+      type: 'basic',
+      message: message
+    });
+  });
+}
+
+async function hasWindowsAgent() {
+  return new Promise((resolve) => {
+    chrome.runtime.sendNativeMessage(NATIVE_HOST_V2_NAME, {action: AGENT_HANDSHAKE},
+        (response) => {
+          if (chrome.runtime.lastError) {
+            console.log("Error sending handshake to Windows agent V2: " + chrome.runtime.lastError.message);
+            resolve(false);
+          }
+          resolve(response && typeof response["version"] === "string");
+        });
+  });
+}
+
+function requestCallback(details) {
+  // if app is not initialized yet allow all requests
+  if (!config) {
+    return {cancel: false}
+  }
+  const url = details.url;
+  if (isUrlInAllowed(url)) {
+    return {cancel: false};
+  }
+  let shouldAllow = true;
+  let redirectUrl = chrome.runtime.getURL("blocking/block.html");
+  if (config.whitelist && !(config.lockedToCourseWorkResources && isAllowedSsoOrInitiator(details))) {
+    shouldAllow = isAllowed(url, config.whitelist, true);
+    redirectUrl += config.isSiteLocked ? "?t=w" : "?t=" + btoa(encodeURIComponent(config.blockingPlanName));
+  } else if (config.orgBlocklist || config.blockingPlanUrls) {
+    const shouldAllowOrg = config.orgBlocklist ? isAllowed(url, config.orgBlocklist, false) : true;
+    const shouldAllowCustom = config.blockingPlanUrls ? isAllowed(url, config.blockingPlanUrls, false) : true;
+    shouldAllow = shouldAllowOrg && shouldAllowCustom;
+    if (!shouldAllow) {
+      urlStorage.saveUrl(config.sessionId, new Url(url, null, true))
+    }
+    if (!shouldAllowOrg) {
+      redirectUrl += "?t=o";
+    } else if (!shouldAllowCustom) {
+      redirectUrl += "?t=" + btoa(encodeURIComponent(config.blockingPlanName));
+    }
+  }
+  return shouldAllow ? {cancel: false} : {redirectUrl: redirectUrl};
+}
+
+function isUrlInAllowed(url) {
+  // Allow own pages
+  if (url.indexOf("chrome-extension://" + chrome.runtime.id) !== -1) {
+    return true;
+  }
+  // Allow blank page
+  if (url.indexOf("/_/chrome/newtab") !== -1) {
+    return true;
+  }
+  // Allow connect to CT and video streaming
+  const urlMatch = url.match("^(.*[a-zA-Z]:\\/\\/)?([^\\/\\n]*)(\\/.*)?$");
+  if (urlMatch && urlMatch.length > 1) {
+    const domain = url.match("^(.*[a-zA-Z]:\\/\\/)?([^\\/\\n]*)(\\/.*)?$")[2];
+    const allowed = [SERVER.replace("https://", ""), "deviceconsole.securly.com", "techpilotlabs.com"];
+    for (const pattern of allowed) {
+      if (domain.match(pattern)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function headersReceivedCallback(details) {
+  if (!config || !config.lockedToCourseWorkResources) {
+    return {cancel: false}
+  }
+  if (details.statusCode === 302) {
+    const location = details.responseHeaders.find(header => header.name.toLowerCase() === "location");
+    if (location && isAllowed(details.url, config.whitelist, true)
+        && !config.whitelist.some(url => location["value"] === url)) {
+      config.whitelist.push(location["value"]);
+      config.saveWhitelist(config.whitelist);
+    }
+  }
+  return {cancel: false};
+}
+
+function completedRequestCallback(details) {
+  const activeSession = config.sessionId;
+  if (!activeSession) {
+    return;
+  }
+  const domain = parseDomain(details.url);
+  if (domain && domain.indexOf("chrome-extension") !== -1) {
+    return;
+  }
+  if (domain) {
+    if (details.tabId !== -1) {
+      getTabTitle(details.tabId)
+          .then(tabTitle => {
+            urlStorage.saveUrl(activeSession, new Url(domain, tabTitle));
+          });
+    } else {
+      urlStorage.saveUrl(activeSession, new Url(domain, null));
+    }
+  }
+}
+
+async function getTabTitle(tabId, retry = true) {
+  try {
+    const tab = await getTab(tabId);
+    if (tab.title) {
+      return tab.title;
+    } else if (retry) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return getTabTitle(tabId, false);
+    }
+  } catch (ignored) { }
+  return null;
+}
+
+function parseDomain(url) {
+  return url.match(/^([a-zA-Z]*:\/\/)?([wW]{3}[0-9]?\.)?([^\/\?]*)(\/|\?)?.*$/)[3];
+}
+
+function isAllowed(url, patternList, isWhiteList) {
+  if (config.lockedToCourseWorkResources) {
+    for (const assignmentId of config.canvasAssignmentIds) {
+      if (url.includes("assignment_id=" + assignmentId)) {
+        return isWhiteList;
+      }
+    }
+  }
+  if (!url.includes("youtube.com")) {
+    url = url.split("?")[0];
+  }
+  for (const pattern of patternList) {
+    if (url.match(pattern)) {
+      return isWhiteList;
+    }
+  }
+  return !isWhiteList;
+}
+
+function isAllowedSsoOrInitiator(details) {
+  const urlDomain = details.url ? parseDomain(details.url) : null;
+  for (const allowedDomain of ALLOWED_DOMAINS) {
+    if (urlDomain && urlDomain.includes(allowedDomain)) {
+      return true;
+    }
+  }
+  if (typeof details.initiator === "string") {
+    const initiator = details.initiator;
+    for (const item of ALLOWED_INITIATORS) {
+      if (initiator.includes(item)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+async function connectionChangeListener() {
+  if (navigator.onLine) {
+    if (!connectionChangeListener.connecting) {
+      connectionChangeListener.connecting = true;
+      console.log("Connection restored");
+      const pollingAlarm = await getAlarm(ALARM_RESTART_POLLING);
+      if (pollingAlarm) {
+        console.log("Restarting polling after connection restored");
+        await clearAlarm(ALARM_RESTART_POLLING);
+        pollServer();
+      }
+    }
+  } else {
+    connectionChangeListener.connecting = false;
+    console.log("Connection lost");
+  }
+}
+
+var urlStorage = null;
+chrome.webRequest.onBeforeRequest.addListener(requestCallback, {
+      urls: ["<all_urls>"],
+      types: ["main_frame"]
+    },
+    ["blocking"]
+);
+chrome.webRequest.onHeadersReceived.addListener(headersReceivedCallback, {
+      urls: ["<all_urls>"],
+      types: ["main_frame"]
+    },
+    ["blocking", "responseHeaders"]
+);
+
+console.log("Extension log here");
+
+navigator.connection.addEventListener("change", connectionChangeListener);
+
+

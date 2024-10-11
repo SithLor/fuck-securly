@@ -1,0 +1,77 @@
+<div id="tpScreenLockCover" class="tpCover tpDivCvr" style="display: none;">
+    <div>
+        <img id="tp_blk_icon" alt="Lock sign" class="tpExclamSign" src="blocked.png">
+        <div class="tpClean tpBlkMsg">
+            <div id="blocked_message" class="tpClean tpMsgTxt">This content has been blocked by your administrator</div>
+        </div>
+    </div>
+</div>
+<div id="tpAnnouncementCover" class="tpClean tpMsgCover" style="display: none;">
+    <div class="tpClean tpPopup">
+        <div class="tpClean">
+            <table id="tpMsgTable" style="display: none;">
+                <tr>
+                    <td class="tpTdAlign">
+                        <div class="tpClean tpPopupHeader">
+                            <div class="tpClean tpHeaderWrapper tpWidth100">
+                                <div id="tpPopupTitle" class="tpClean tpPopupTitle">Message from your teacher</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="background-color: unset;">
+                    <td class="tpMessage">
+                        <div id="tpAnnouncementMessage" class="tpClean tpMessage">&nbsp;</div>
+                        <div id="tpOkButton" class="tpClean tpBtn primary">OK</div>
+                    </td>
+                </tr>
+            </table>
+            <table id="tpConfirmTable" style="display: none;">
+                <tr>
+                    <td class="tpTdAlign">
+                        <div class="tpClean tpPopupHeader">
+                            <div class="tpClean tpHeaderWrapper tpWidth100">
+                                <div id="tpRequestConfimTitle" class="tpClean tpPopupTitle">Requesting screen sharing</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="background-color: unset;">
+                    <td class="tpMessage">
+                        <div id="tpRequestConfimMessage" class="tpClean tpScreenShare">
+                            Your teacher wants to share your screen<br/>
+                            Click OK to continue, or cancel to deny the request</div>
+                        <div class="tpClean tpBtnRow">
+                            <div id="tpAgreeButton" class="tpClean tpBtn primary">OK</div>
+                            <div id="tpRejectButton" class="tpClean tpBtn cancel">Cancel</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="chatPanel">
+    <div class="tpContent">
+        <div class="chat">
+            <div class="tpPopupHeader">
+                <div class="tpHeaderWrapper">
+                    <div class="tpPopupTitle">Chat with your teacher</div>
+                </div>
+                <div id="tpCloseBtn" class="btnContainer">
+                    <div class="btnIcon">
+                        <div class="icofont">cross</div>
+                    </div>
+                </div>
+            </div>
+            <div class="historyTimeline flex flexGroup bottomBorder">
+                <div  id="tpMessageList" class="messageList">
+                </div>
+            </div>
+            <div class="chatMessage">
+                <textarea data-meteor-emoji="true" id="tpText" placeholder="Type your message"></textarea>
+                <div id="tpSendButton" class="tpBtn primary tpFloatRight">Send</div>
+            </div>
+        </div>
+    </div>
+</div>
